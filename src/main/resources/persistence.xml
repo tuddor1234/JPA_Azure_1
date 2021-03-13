@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone = "yes" ?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+    <persistence-unit name="my-persistence-unit">
+
+        <description>Hibernate</description>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+
+        <properties>
+
+            <property name="spring.jpa.database-platform" value="org.hibernate.dialect.Oracle10gDialect"/>
+            <property name="spring.datasource.driver-class-name" value="oracle.jdbc.OracleDriver"/>
+            <property name="spring.datasource.url" value=" jdbc:oracle:thin:@//127.0.0.1:1521/orcl"/>
+            <property name="spring.datasource.username" value="system"/>
+            <property name="spring.datasource.password" value="1q2w3e4r"/>
+        </properties>
+
+    </persistence-unit>
+
+</persistence>
