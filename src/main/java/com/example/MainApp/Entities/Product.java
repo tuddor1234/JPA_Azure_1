@@ -8,16 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Data
-//@AllArgsConstructor
-@NoArgsConstructor
-public class Product  extends Sellable{
+
+public class Product extends Sellable{
 
     private float price;
 
-    public Product(long _ID, String _name, int _price){
-        this.id = _ID;
-        this.name = _name;
+
+
+
+    public Product( String _name, int _price){
+        super(_name);
         this.price = _price;
     }
 }
