@@ -1,23 +1,21 @@
 package com.example.MainApp.Entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
-
 public class Product extends Sellable{
 
-    private float price;
+    float shippingArea;
+    String availability;
+
+    private Product(){
+        super();
+    }
 
 
-
-
-    public Product( String _name, int _price){
-        super(_name);
-        this.price = _price;
+    public Product( String _name, String _desc , float _price, String _currency , float _shippingArea , String _availability){
+        super(_name, _desc, _price, _currency );
+        shippingArea = _shippingArea;
+        availability = _availability;
     }
 }

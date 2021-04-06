@@ -1,22 +1,32 @@
 package com.example.MainApp.Entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-
 import javax.persistence.Entity;
 
 @Entity
-//@Data
-//@RequiredArgsConstructor
-//@NoArgsConstructor
 public class Service extends  Sellable{
-    private  float availableDistance;
 
-    public Service(String _name, float _availableDistance)
+    private float maxDistance;
+    private float duration;
+
+    private Service()
     {
-        super(_name);
-        this.availableDistance = _availableDistance;
+        super();
+    }
+
+
+    public Service( String _name, String _desc , float _price, String _currency , float _maxDistance, float _duration)
+    {
+        super(_name, _desc, _price, _currency );
+        this.maxDistance = _maxDistance;
+        this.duration = _duration;
+    }
+
+    @Override
+    public String toString() {
+        return "Service{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", availableDistance=" + maxDistance +
+                '}';
     }
 }

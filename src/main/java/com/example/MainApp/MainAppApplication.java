@@ -22,6 +22,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.rowset.serial.SerialJavaObject;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,38 +50,63 @@ class SqlServerDemo{
 
 	private final ServiceRepository serviceRepository;
 
+
+	@PersistenceContext
+	EntityManager entityManager;
+
 	@EventListener(ApplicationReadyEvent.class)
 	public void ready()
 	{
-
-		Business b1 = new Business("Name");
-		Business b2 = new Business("Conti");
-		Business b3 = new Business("Nokia");
-
-		Business b4 = new Business("Hella");
-
-		businessRepository.save(b1);
-		businessRepository.save(b2);
-		businessRepository.save(b3);
-		businessRepository.save(b4);
-
-		businessRepository.findAll().forEach(System.out::println);
-
-
-		Product product1 = new Product("Produs1", 15);
-		Product product2 = new Product("Produs2", 80);
-		Product product3 = new Product("Produs3", 120);
-
-		productRepository.save(product1);
-		productRepository.save(product2);
-		productRepository.save(product3);
-
-		Service service1 = new Service("Service1",10);
-		Service service2 = new Service("Service2",1000);
-		Service service3 = new Service("Service3",15);
-
-		serviceRepository.save(service1);
-		serviceRepository.save(service2);
-		serviceRepository.save(service3);
+//
+//		Business b1 = new Business("Name","123","Cluj","123455");
+//		Business b2 = new Business("Conti", "4125", "Timisoara", "15567");
+//		Business b3 = new Business("GameLoft" , "152", "Cluj","15632" );
+//
+//		Business b4 = new Business("Hella","15267","Timisoara","2555");
+//
+//		businessRepository.save(b1);
+//		businessRepository.save(b2);
+//		businessRepository.save(b3);
+//		businessRepository.save(b4);
+//
+//		businessRepository.findAll().forEach(System.out::println);
+//
+//
+////
+//
+//		Product product1 = new Product("Produs1", 15);
+//		Product product2 = new Product("Produs2", 80);
+//		Product product3 = new Product("Produs3", 120);
+//
+//		productRepository.save(product1);
+//		productRepository.save(product2);
+//		productRepository.save(product3);
+//
+//		Service service1 = new Service("Service1",10);
+//		Service service2 = new Service("Service2",1000);
+//		Service service3 = new Service("Service3",15);
+//
+//
+//		serviceRepository.save(service1);
+//		serviceRepository.save(service2);
+//		serviceRepository.save(service3);
+//
+//
+//		b1.AddSellable(product1);
+//		b1.AddSellable(product2);
+//		b1.AddSellable(service3);
+//		businessRepository.save(b1);
+//
 	}
+
+
+
+//	public List<Business> FindAllBusiness()
+//	{
+//		return businessRepository.findAll();
+//	}
+
+
+
+
 }
