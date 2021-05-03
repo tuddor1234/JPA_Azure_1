@@ -5,8 +5,8 @@ import javax.persistence.Entity;
 @Entity
 public class Service extends  Sellable{
 
-    private float maxDistance;
-    private float duration;
+    private float maxDistance = -1;
+    private float duration = -1;
 
     private Service()
     {
@@ -21,12 +21,23 @@ public class Service extends  Sellable{
         this.duration = _duration;
     }
 
+    public Service(Service s)
+    {
+        super(s);
+        this.maxDistance = s.maxDistance;
+        this.duration = s.duration;
+    }
+
     @Override
     public String toString() {
         return "Service{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", availableDistance=" + maxDistance +
+                ", currency='" + currency + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", maxDistance=" + maxDistance +
+                ", duration=" + duration +
                 '}';
     }
 }
