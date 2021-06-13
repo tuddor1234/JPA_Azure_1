@@ -2,14 +2,12 @@ package com.example.MainApp;
 
 import com.example.MainApp.Entities.Business;
 import com.example.MainApp.Entities.Product;
-import com.example.MainApp.Entities.Sellable;
-import com.example.MainApp.Entities.Service;
 import com.example.MainApp.Repositories.BusinessRepository;
 import com.example.MainApp.Repositories.ProductRepository;
 import com.example.MainApp.Repositories.SellableRepository;
 import com.example.MainApp.Repositories.ServiceRepository;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,17 +15,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
+
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
-import javax.sql.rowset.serial.SerialJavaObject;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 
 @SpringBootApplication
 public class MainAppApplication{
@@ -37,26 +34,74 @@ public class MainAppApplication{
 	}
 }
 
-
-
 @Component
-@RequiredArgsConstructor
 class SqlServerDemo{
 
+	@Autowired
+	private  BusinessRepository businessRepository;
+	@Autowired
+	private  ProductRepository productRepository;
+	@Autowired
+	private  ServiceRepository serviceRepository;
 
-	private  final BusinessRepository businessRepository;
 
-	private final ProductRepository productRepository;
-
-	private final ServiceRepository serviceRepository;
-
-
-	@PersistenceContext
+	@Autowired
 	EntityManager entityManager;
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void ready()
 	{
+
+
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Business> cq = cb.createQuery(Business.class);
+		Root<Business> root = cq.from(Business.class);
+
+		cq.select(root).where(cb.equal(root.get("location"),"Cluj"));
+
+
+		var allBusinessesInCluj  = entityManager.createQuery(cq).getResultList();
+		// businessRepository.findAll(HasLocationInCluj());
+		allBusinessesInCluj.forEach(System.out::println);
+
+
+//		entityManager.getTransaction().commit();
+//		entityManager.close();
+//
+
+//		var prod = productRepository.findAll();
+//		boolean al = true;
+//		for(Sellable p : prod)
+//		{
+//			if(al)
+//			{
+//				p.setDescription("Ceva cu altceva si aliaj metalic");
+//				productRepository.save(p);
+//			}
+//			al = !al;
+//
+//		}
+
+
+//		var business = businessRepository.findAll();
+//		var products = productRepository.findAll();
+
+//		Random random = new Random();
+//
+//		for(var b : business)
+//		{
+//			for(var p : products)
+//			{
+//				if(random.nextBoolean())
+//				{
+//					b.AddSellable(p);
+//				}
+//			}
+//		}
+//		businessRepository.saveAll(business);
+//
+
+
 //
 //		Business b1 = new Business("Name","123","Cluj","123455");
 //		Business b2 = new Business("Conti", "4125", "Timisoara", "15567");
@@ -97,6 +142,20 @@ class SqlServerDemo{
 //		b1.AddSellable(service3);
 //		businessRepository.save(b1);
 //
+
+//		var b1 = ((Business) ((ArrayList) businessRepository.findAll()).get(0));
+//		var p1 = ((Product) ((ArrayList) productRepository.findAll()).get(0));
+//
+//		System.out.println(b1.getName());
+//		b1.AddSellable(p1);
+//		businessRepository.save(b1);
+
+
+
+
+
+
+
 	}
 
 
@@ -105,6 +164,8 @@ class SqlServerDemo{
 //	{
 //		return businessRepository.findAll();
 //	}
+
+
 
 
 

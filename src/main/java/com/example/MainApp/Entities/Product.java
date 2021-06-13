@@ -1,14 +1,16 @@
 package com.example.MainApp.Entities;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "Product")
 public class Product extends Sellable{
 
-    float shippingArea = -1;
-    String availability  = new String();
+    private float shippingArea = -1;
+    private String availability  = new String();
 
-    private Product(){
+    public Product(){
         super();
     }
 
@@ -20,11 +22,11 @@ public class Product extends Sellable{
     }
 
 
-    public Product(Product p)
+    public Product(Product product)
     {
-        super(p);
-        this.shippingArea = p.shippingArea;
-        this.availability = p.availability;
+        super(product);
+        this.shippingArea = product.shippingArea;
+        this.availability = product.availability;
     }
 
 

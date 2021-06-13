@@ -3,9 +3,7 @@ package com.example.MainApp.Entities;
 
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 
 @Entity
@@ -20,7 +18,17 @@ public abstract class Sellable {
     protected float price = -1;
     protected String description = new String();
 
+    @ManyToMany(mappedBy = "sellables", fetch = FetchType.EAGER)
+    Set<Business> businessesthatsellme = new HashSet<>();
 
+
+    public UUID getId() {
+        return id;
+    }
+
+    public Set<Business> getBusinessesthatsellme() {
+        return businessesthatsellme;
+    }
 
     public String getName() {
         return name;
@@ -55,9 +63,6 @@ public abstract class Sellable {
     }
 
 
-    @ManyToMany(mappedBy = "sellables")
-    Set<Business> businessesThatSellMe = new HashSet<>();
-
 
     protected Sellable(){}
 
@@ -80,7 +85,7 @@ public abstract class Sellable {
 
     public void AddBusiness(Business business)
     {
-        businessesThatSellMe.add(business);
+        businessesthatsellme.add(business);
     }
 
     @Override
@@ -91,7 +96,7 @@ public abstract class Sellable {
                 ", currency='" + currency + '\'' +
                 ", price=" + price +
                 ", description='" + description + '\'' +
-                ", businessesThatSellMe=" + businessesThatSellMe +
+                ", businessesThatSellMe=" + businessesthatsellme +
                 '}';
     }
 }

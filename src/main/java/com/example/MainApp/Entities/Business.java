@@ -10,7 +10,20 @@ public class Business {
     @Id
     @GeneratedValue(strategy =  GenerationType.AUTO)
     private UUID ID;
+    private String name;
+    private String CIF;
+    private String location;
+    private String RegistrationNumber;
 
+
+    @ManyToMany( fetch = FetchType.EAGER)
+    @JoinTable(name = "business_sellable"
+            , joinColumns =  @JoinColumn(name = "business_id")
+    )
+    Set<Sellable> sellables = new HashSet<Sellable>();
+
+
+    //Getters and setters
     public String getName() {
         return name;
     }
@@ -51,15 +64,6 @@ public class Business {
         this.sellables = sellables;
     }
 
-    private String name;
-    private String CIF;
-    private String location;
-    private String RegistrationNumber;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "business_sellable",
-    joinColumns =  @JoinColumn(name = "business_id"))
-    Set<Sellable> sellables = new HashSet<>();
 
 
     public Business(){}
@@ -73,6 +77,9 @@ public class Business {
 
     public void AddSellable(Sellable sellable)
     {
+        if(sellable == null)
+            return;
+
         sellables.add(sellable);
         sellable.AddBusiness(this);
     }
