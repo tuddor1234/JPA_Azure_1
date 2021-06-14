@@ -45,7 +45,7 @@ class MainAppApplicationTests {
 	@Resource
 	ServiceRepository serviceRepository;
 
-	//@PersistenceContext
+	@Autowired
 	EntityManager em;
 
 //	@Autowired
@@ -179,12 +179,12 @@ class MainAppApplicationTests {
 
 		Root<Product> prod = cq5.from(Product.class);
 
-		Root<Business> pet = cq.from(Business.class);
-		var join = pet.join(String.valueOf(prod.get("businessesthatsellme")));
-
-		cq.select(join.get("name"));
-		var all =em.createQuery(cq5).getResultList();
-		all.forEach(System.out::println);
+//		Root<Business> pet = cq.from(Business.class);
+//		var join = pet.join(prod.get("businessesthatsellme"));
+//
+//		cq.select(join.get("name"));
+//		var all =em.createQuery(cq5).getResultList();
+//		all.forEach(System.out::println);
 
 		assert(true);
 	}
@@ -224,12 +224,6 @@ class MainAppApplicationTests {
 //		serviceRepository.saveAll(desiredServices);
 		assert(true);
 	}
-
-	public void RemoveProductX()
-	{
-
-	}
-
 
 
 	@Test
