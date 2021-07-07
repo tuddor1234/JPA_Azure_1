@@ -29,6 +29,7 @@ import javax.persistence.metamodel.EntityType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import static com.example.MainApp.Specs.BusinessSpecs.HasLocationInCluj;
 import static org.springframework.data.jpa.domain.Specification.where;
@@ -70,6 +71,13 @@ class MainAppApplicationTests {
 		assert(first.getName().equals("AnAwesomeBusiness"));
 	}
 
+	@Test
+	public void HaveLocationInClujV2()
+	{
+		var allBusinessesInCluj = businessRepository.findAll(HasLocationInCluj());
+		allBusinessesInCluj.forEach(System.out::println);
+	}
+
 
 	/** Easy tests */
 	@Test  // FIND ALL BUSINESS IN CLUJ
@@ -81,12 +89,10 @@ class MainAppApplicationTests {
 
 		cq.select(root).where(cb.equal(root.get("location"),"Cluj"));
 
-
 		var allBusinessesInCluj  = em.createQuery(cq).getResultList();
-				// businessRepository.findAll(HasLocationInCluj());
 		allBusinessesInCluj.forEach(System.out::println);
 
- 		assert(allBusinessesInCluj.size() > 0);
+ 		assert(true);
 	}
 
     @Test
@@ -95,135 +101,158 @@ class MainAppApplicationTests {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<String> cq = cb.createQuery(String.class);
 		Root<Product> root = cq.from(Product.class);
-		cq.select(root.get("currency")).distinct(true).where(cb.equal(root.get("name"),"Produs1"));
+		cq.select(root.get("currency")).distinct(true).where(cb.equal(root.get("name"),"Product1"));
 
 		var results = em.createQuery(cq).getResultList();
 		results.forEach(System.out::println);
 
-		assert (results.size() > 0);
+		assert (true);
 	}
 
-	//@TODO FINISH THIS TEST, maybe ask
-	@Test // Find All Businesses that sell products with X
-	public void AllBusinessThatSellX()
+ 	@Test
+	public void AllBusinessThatSellProduct1()
 	{
-		// Step 1. Find all products that contain X
-
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
+		CriteriaQuery<Business> criteriaQuery = criteriaBuilder.createQuery(Business.class);
 
-		//Root<Business> bRoot = criteriaQuery.from(Business.class);
-		Root<Product> rootP = criteriaQuery.from(Product.class);
+		Root<Business> businessRoot = criteriaQuery.from(Business.class);
+		Join<Business, Product> businesses_product = businessRoot.join("sellables",JoinType.INNER);
 
-		var condition = criteriaBuilder.like(rootP.get("description"),"%aliaj metalic%");
-		criteriaQuery.select(rootP).distinct(true).where(condition);
+		var nameMatch = criteriaBuilder.equal(businesses_product.get("name"),"Product1");
+		var descriptionMatch = criteriaBuilder.like(businesses_product.get("description"), "%aliaj metalic%");
+		criteriaQuery.where(criteriaBuilder.and(nameMatch,descriptionMatch)).distinct(true);
 
-		var productsWithAM = em.createQuery(criteriaQuery).getResultList();
+		var list = em.createQuery((criteriaQuery)).getResultList();
+		list.forEach(System.out::println);
 
-
-
-
-		productsWithAM.forEach(System.out::println);
-		//System.out.println(productsWithAM.size());
-		assert (productsWithAM.size() > 0);
-
-		CriteriaQuery<Business> businessCriteriaQuery = criteriaBuilder.createQuery(Business.class);
-		Root<Business> businessRoot = businessCriteriaQuery.from(Business.class);
-
-//		var newCondition = criteriaBuilder.in();
-//		businessCriteriaQuery.select(businessRoot).distinct(true).where(newCondition).in;
-
-
-//		Join<Business, Product> answers = bRoot.join("sellables", JoinType.INNER);
-//		CriteriaQuery<Product> cq = criteriaQuery.select(answers).where(condition);
-//
-//		var query = em.createQuery(cq).getResultList();
-
-
-//		System.out.println("\n\n\n");
-//		query.forEach(System.out::println);
-//		System.out.println("\n\n\n");
-
-
-
-
-//		assert(query.size() > 0);
-	}
-
-	@Test
-	public void Second()
-	{
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-//		CriteriaQuery<Business> cq1 = cb.createQuery(Business.class);
-//		Root<Business> broot = cq1.from(Business.class);
-//
-//		CriteriaQuery<Product> cq2 = cb.createQuery(Product.class);
-//		Root<Product> proot = cq2.from(Product.class);
-//
-//		var join = broot.join(String.valueOf(proot.get("businessesthatsellme"))) ;
-//
-//		cq1.select(join.get("location"));
-//		var all =em.createQuery(cq1).getResultList();
-//		all.forEach(System.out::println);
-
-
-		// PET = Business
-		// Owner = Product
-
-		CriteriaQuery<Business> cq = cb.createQuery(Business.class);
-		CriteriaQuery<Product> cq5 = cb.createQuery(Product.class);
-
-		Metamodel m = (Metamodel) em.getMetamodel();
-		EntityType<Business> business = m.entity(Business.class);
-
-
-		Root<Product> prod = cq5.from(Product.class);
-
-//		Root<Business> pet = cq.from(Business.class);
-//		var join = pet.join(prod.get("businessesthatsellme"));
-//
-//		cq.select(join.get("name"));
-//		var all =em.createQuery(cq5).getResultList();
-//		all.forEach(System.out::println);
 
 		assert(true);
 	}
-
-
-	@Test
-	public void ExtendTime()
-	{
-		// GET ALL SERVICES, IF THEY Happen in TM, extend by one hour
-
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery cq = cb.createQuery(Service.class);
-		Root<Service> serviceRoot = cq.from(Service.class);
-
-		CriteriaQuery businessQuery = cb.createQuery(Business.class);
-		Root<Business> businessRoot = businessQuery.from(Business.class);
-
-		cq.select(businessRoot.get("sellables")).distinct(true).where(cb.equal(businessRoot.get("location"),"Timisoara"));
-
-		var businesses = em.createQuery(businessQuery).getResultList();
-		businesses.forEach(System.out::println);
-
-		//cq.select(serviceRoot).where();
-
-
-
-
-//		var desiredServices = (List<Service>) em.createQuery(cq).getResultList();
+//	@Test
+//	void ClearTable()
+//	{
+//		//serviceRepository.deleteAll();
 //
-//		for (var service : desiredServices)
+//		var all = serviceRepository.findAll();
+//		all.forEach(System.out::println);
+//	}
+
+//	@Test
+//	void PopulateTable()
+//	{
+////		Product p1 = new Product("Product1", "Something with aliaj metalic",
+////				12, "EUR",12,"YES");
+////		Product p2 = new Product("Product1", "Something else with aliaj metalic",
+////				1512, "RON",12555,"YES");
+////		Product p3 = new Product("Product2", "Something without aliaj metalic",
+////				12, "EUR",12,"YES");
+////		Product p4 = new Product("Product3", "just something",
+////				12, "EUR",12,"YES");
+////
+////		productRepository.save(p1);
+////		productRepository.save(p2);
+////		productRepository.save(p3);
+////		productRepository.save(p4);
+////
+//
+//
+//		var allBusiness = businessRepository.findAll();
+//		var allProducts = productRepository.findAll();
+//		var allServices = serviceRepository.findAll();
+//
+//		Random r = new Random();
+//
+//		for(var b : allBusiness)
 //		{
-//			var dur = service.getDuration();
-//			dur += 60;
-//			service.setDuration(dur);
+//			 for(var p : allProducts)
+//			 {
+//			 	if(r.nextBoolean() == true)
+//			 		b.AddSellable(p);
+//			 }
+//
+//			 for(var s : allServices)
+//				 if(r.nextBoolean() == true)
+//					 b.AddSellable(s);
+//
 //		}
 //
-//		serviceRepository.saveAll(desiredServices);
-		assert(true);
+//		businessRepository.deleteAll();
+//		businessRepository.saveAll(allBusiness);
+//
+//	}
+
+
+
+	@Test
+	void ExtendTimeV2()
+	{
+
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<Service> criteriaQuery = criteriaBuilder.createQuery(Service.class);
+		Root<Service> root = criteriaQuery.from(Service.class);
+
+		Join<Service, Business> service_business = root.join("businessesthatsellme", JoinType.INNER);
+
+		var matchLocation = criteriaBuilder.equal(service_business.get("location"),"Timisoara");
+		criteriaQuery.where(matchLocation).distinct(true);
+
+		var list = em.createQuery((criteriaQuery)).getResultList();
+		list.forEach(System.out::println);
+
+		for(var service :list) {
+			var dur = service.getDuration() + 60;
+			service.setDuration(dur);
+		}
+
+		serviceRepository.saveAll(list);
 	}
+
+	//Remove ProductX from the market and all the businesses that only sold Pro-ductX
+	@Test
+	void RemoveX()
+	{
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<Business> criteriaQuery = criteriaBuilder.createQuery(Business.class);
+
+		Root<Business> businessRoot = criteriaQuery.from(Business.class);
+		Join<Business, Product> businesses_product = businessRoot.join("sellables",JoinType.INNER);
+
+		var nameMatch = criteriaBuilder.equal(businesses_product.get("name"),"Product1");
+		criteriaQuery.where(nameMatch).distinct(true);
+
+		var list = em.createQuery(criteriaQuery).getResultList();
+
+		for(var b :list)
+		{
+			var sellables = b.getSellables();
+			if(sellables.size() == 1 )
+			{
+				for( var x :sellables)
+				{
+					if(x.getName().equals("Product1"))
+					{
+						em.remove(b);
+						break;
+					}
+				}
+			}
+		}
+
+
+		CriteriaQuery<Product> q2 = criteriaBuilder.createQuery(Product.class);
+
+		Root<Product> proot = q2.from(Product.class);
+
+		var nameMatchAgain = criteriaBuilder.equal(proot.get("name"),"Product1");
+		criteriaQuery.where(nameMatchAgain).distinct(true);
+
+		var list2 = em.createQuery(q2).getResultList();
+		for(var p : list2)
+			em.remove(p);
+
+	}
+
+
 
 
 	@Test

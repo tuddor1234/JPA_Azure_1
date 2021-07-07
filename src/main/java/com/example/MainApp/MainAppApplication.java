@@ -2,6 +2,7 @@ package com.example.MainApp;
 
 import com.example.MainApp.Entities.Business;
 import com.example.MainApp.Entities.Product;
+import com.example.MainApp.Entities.Service;
 import com.example.MainApp.Repositories.BusinessRepository;
 import com.example.MainApp.Repositories.ProductRepository;
 import com.example.MainApp.Repositories.SellableRepository;
@@ -51,18 +52,27 @@ class SqlServerDemo{
 	@EventListener(ApplicationReadyEvent.class)
 	public void ready()
 	{
+//		Service s1 = new Service("Service1", "Some description", 200 ,"USD", 20 , 120);
+//		Service s2 = new Service("Service2", "No description", 1200 ,"RON", 120 , 20);
+//		Service s3 = new Service("Service3", "Exchange ", 123 ,"EUR", 21 , 5);
+//		Service s4 = new Service("Service5", "Software developement", 20000 ,"USD", -1 , 120);
+//
+//		serviceRepository.save(s1);
+//		serviceRepository.save(s2);
+//		serviceRepository.save(s3);
+//		serviceRepository.save(s4);
 
-
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Business> cq = cb.createQuery(Business.class);
-		Root<Business> root = cq.from(Business.class);
-
-		cq.select(root).where(cb.equal(root.get("location"),"Cluj"));
-
-
-		var allBusinessesInCluj  = entityManager.createQuery(cq).getResultList();
-		// businessRepository.findAll(HasLocationInCluj());
-		allBusinessesInCluj.forEach(System.out::println);
+//
+//		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+//		CriteriaQuery<Business> cq = cb.createQuery(Business.class);
+//		Root<Business> root = cq.from(Business.class);
+//
+//		cq.select(root).where(cb.equal(root.get("location"),"Cluj"));
+//
+//
+//		var allBusinessesInCluj  = entityManager.createQuery(cq).getResultList();
+//		// businessRepository.findAll(HasLocationInCluj());
+//		allBusinessesInCluj.forEach(System.out::println);
 
 
 //		entityManager.getTransaction().commit();
